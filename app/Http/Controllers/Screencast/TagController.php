@@ -15,7 +15,7 @@ class TagController extends Controller
      */
     public function table()
     {
-        $tags = Tag::has('playlists')->withCount('playlists')->latest()->paginate(10);
+        $tags = Tag::withCount('playlists')->latest()->paginate(10);
 
         return view('tags.table', compact('tags'));
     }
@@ -26,7 +26,7 @@ class TagController extends Controller
     public function create()
     {
         return view('tags.create', [
-            'tags' => new Tag(),
+            'tag' => new Tag(),
         ]);
     }
 
@@ -44,34 +44,34 @@ class TagController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Tag $tag)
     {
-        //
+        return view('tags.edit', compact('tag'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(TagRequest $request, Tag $tag)
     {
-        //
+        $tag->update([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+        ]);
+
+        return to_route('tags.table');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Tag $tag)
     {
-        //
+        $tag->playlists()->detach();
+        $tag->delete();
+
+        return to_route('tags.table');
     }
 }

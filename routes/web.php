@@ -33,10 +33,18 @@ Route::middleware('auth')->group(function () {
         Route::delete('{playlist:slug}/delete', [PlaylistController::class, 'destroy'])->name('playlists.destroy');
     });
 
-    Route::prefix('tags')->middleware('permission: create tags')->group(function () {
-        Route::get('create', [TagController::class, 'create'])->name('tags.create');
-        Route::post('create', [TagController::class, 'store']);
-        Route::get('table', [TagController::class, 'table'])->name('tags.table');
+    Route::prefix('tags')->group(function () {
+        Route::middleware('permission:create tags')->group(function () {
+            Route::get('create', [TagController::class, 'create'])->name('tags.create');
+            Route::post('create', [TagController::class, 'store']);
+            Route::get('table', [TagController::class, 'table'])->name('tags.table');
+        });
+
+        Route::middleware('permission:delete tags|edit tags')->group(function () {
+            Route::get('{tag:slug}/edit', [TagController::class, 'edit'])->name('tags.edit');
+            Route::put('{tag:slug}/edit', [TagController::class, 'update']);
+            Route::delete('{tag:slug}/delete', [TagController::class, 'destroy'])->name('tags.destroy');
+        });
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
