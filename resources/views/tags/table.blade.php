@@ -21,7 +21,7 @@
                 @can('delete tags')
                     <x-table.td>
                         <div class="flex items-center gap-x-2">
-                            <a href="{{ route('tags.edit', $tag->slug) }}" class="underline uppercase text-blue-500">Edit</a>
+                            <a href="{{ route('tags.edit', $tag->slug) }}" class="underline uppercase">Edit</a>
 
                             <div x-data='{deleteModal: false}'>
                                 <x-confirm-modal state="deleteModal" x-show="deleteModal" title="Delete the Tag?">
@@ -35,7 +35,7 @@
                                         </form>
                                     </div>
                                 </x-confirm-modal>
-                                <button @click="deleteModal = true" class="underline uppercase text-red-500">Delete</button>
+                                <button @click="deleteModal = true" class="underline uppercase">Delete</button>
                             </div>
                         </div>
                     </x-table.td>

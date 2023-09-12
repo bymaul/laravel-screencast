@@ -18,7 +18,8 @@
         @foreach ($playlists as $playlist)
             <tr class="bg-white border-b">
                 <x-table.td>{{ $playlists->count() * ($playlists->currentPage() - 1) + $loop->iteration }}</x-table.td>
-                <x-table.td>{{ $playlist->name }}</x-table.td>
+                <x-table.td><a href="{{ route('videos.table', $playlist->slug) }}"
+                        class="underline">{{ $playlist->name }}</a></x-table.td>
                 <x-table.td>
                     <div class="flex items-center gap-x-2">
                         @foreach ($playlist->tags as $tag)
@@ -29,8 +30,8 @@
                 <x-table.td>{{ $playlist->created_at->format('d F, Y') }}</x-table.td>
                 <x-table.td>
                     <div class="flex items-center gap-x-2">
-                        <a href="{{ route('playlists.edit', $playlist->slug) }}"
-                            class="underline uppercase text-blue-500">Edit</a>
+                        <a href="{{ route('videos.create', $playlist->slug) }}" class="underline uppercase">Add</a>
+                        <a href="{{ route('playlists.edit', $playlist->slug) }}" class="underline uppercase">Edit</a>
                         <div x-data='{deleteModal: false}'>
                             <x-confirm-modal state="deleteModal" x-show="deleteModal" title="Delete the Playlist?">
                                 <p>Are you sure you want to delete the playlist?</p>
@@ -43,7 +44,7 @@
                                     </form>
                                 </div>
                             </x-confirm-modal>
-                            <button @click="deleteModal = true" class="underline uppercase text-red-500">Delete</button>
+                            <button @click="deleteModal = true" class="underline uppercase">Delete</button>
                         </div>
                     </div>
                 </x-table.td>
